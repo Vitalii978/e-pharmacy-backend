@@ -12,6 +12,7 @@ const productsRouter = require('./routes/products');
 const ordersRouter = require('./routes/orders');
 const suppliersRouter = require('./routes/suppliers');
 const customersRouter = require('./routes/customers');
+const dashboardRouter = require('./routes/dashboard');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/api/products', productsRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/suppliers', suppliersRouter);
 app.use('/api/customers', customersRouter);
+app.use('/api/dashboard', dashboardRouter);
 
 // Если ни один маршрут не подошел - 404
 app.use((req, res) => {
