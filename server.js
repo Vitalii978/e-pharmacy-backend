@@ -1,15 +1,11 @@
 // @ts-nocheck
-const app = require('./app');
-const mongoose = require('mongoose');
-require('dotenv').config(); // 👈 ЭТА СТРОКА БЫЛА ПРОПУЩЕНА!
+const app = require('./app'); // импортируем настройки из app.js
+const mongoose = require('mongoose'); // библиотека для MongoDB
+require('dotenv').config(); // загружаем переменные из .env
 
-console.log('✅ JWT_SECRET loaded successfully');
+const { DB_HOST } = process.env; // берем строку подключения к базе
 
-const { DB_HOST } = process.env;
-
-// Проверим, что переменная загрузилась (временная проверка)
-console.log('DB_HOST:', DB_HOST); // 👈 Добавим для отладки
-
+// Подключаемся к MongoDB
 mongoose
   .connect(DB_HOST)
   .then(() => {
@@ -18,5 +14,5 @@ mongoose
   })
   .catch(error => {
     console.log('Connection error:', error.message);
-    process.exit(1);
+    process.exit(1); // если не подключились к базе - выходим с ошибкой
   });
