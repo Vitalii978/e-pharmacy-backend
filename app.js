@@ -4,6 +4,8 @@
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 require('dotenv').config();
 
 // Импортируем маршруты
@@ -20,6 +22,9 @@ const app = express();
 app.use(logger('dev')); // логирует запросы в консоль
 app.use(cors()); // разрешает запросы с других доменов
 app.use(express.json()); // преобразует JSON из body в объект
+
+// Подключаем Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Подключаем маршруты (порядок важен - до 404!)
 app.use('/api/user', userRouter); // все запросы на /api/user идут в userRouter
