@@ -9,7 +9,9 @@ require('dotenv').config();
 // Импортируем маршруты
 const userRouter = require('./routes/user'); // обрати внимание: user, а не api/user
 const productsRouter = require('./routes/products');
-const ordersRouter = require('./routes/orders'); // добавили
+const ordersRouter = require('./routes/orders');
+const suppliersRouter = require('./routes/suppliers');
+const customersRouter = require('./routes/customers');
 
 const app = express();
 
@@ -22,6 +24,8 @@ app.use(express.json()); // преобразует JSON из body в объек�
 app.use('/api/user', userRouter); // все запросы на /api/user идут в userRouter
 app.use('/api/products', productsRouter);
 app.use('/api/orders', ordersRouter);
+app.use('/api/suppliers', suppliersRouter);
+app.use('/api/customers', customersRouter);
 
 // Если ни один маршрут не подошел - 404
 app.use((req, res) => {
