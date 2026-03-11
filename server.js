@@ -9,6 +9,9 @@ const { DB_HOST } = process.env; // берем строку подключени
 mongoose
   .connect(DB_HOST)
   .then(() => {
+    console.log('Connected to database:', mongoose.connection.name); // <- ЭТО ВАЖНО!
+    console.log('DB_HOST used:', process.env.DB_HOST); // <- И ЭТО ТОЖЕ
+
     app.listen(process.env.PORT || 3000);
     console.log(`Server running on port ${process.env.PORT || 3000}`);
   })
