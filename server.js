@@ -9,8 +9,8 @@ const { DB_HOST } = process.env; // берем строку подключени
 mongoose
   .connect(DB_HOST)
   .then(() => {
-    app.listen(3000);
-    console.log('Database connection successful');
+    app.listen(process.env.PORT || 3000);
+    console.log(`Server running on port ${process.env.PORT || 3000}`);
   })
   .catch(error => {
     console.log('Connection error:', error.message);
