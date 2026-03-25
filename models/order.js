@@ -1,32 +1,32 @@
-// models/order.js
-// Описываем, как выглядит заказ в базе данных
-
 const { Schema, model } = require('mongoose');
-const Joi = require('joi'); // для валидации данных
+const Joi = require('joi');
 
-// Схема заказа для MongoDB
 const orderSchema = new Schema(
   {
     photo: {
       type: String,
       required: [true, 'Photo is required'],
-      default: 'https://example.com/default-avatar.png', // заглушка
+      default: 'https://example.com/default-avatar.png',
     },
     name: {
       type: String,
       required: [true, 'Customer name is required'],
+      trim: true,
     },
     address: {
       type: String,
       required: [true, 'Address is required'],
+      trim: true,
     },
     products: {
       type: String,
       required: [true, 'Products are required'],
+      trim: true,
     },
     price: {
       type: String,
       required: [true, 'Price is required'],
+      trim: true,
     },
     status: {
       type: String,
@@ -45,6 +45,7 @@ const orderSchema = new Schema(
     order_date: {
       type: String,
       required: [true, 'Order date is required'],
+      trim: true,
     },
   },
   {
@@ -53,24 +54,21 @@ const orderSchema = new Schema(
   }
 );
 
-// ------ СХЕМЫ ДЛЯ ВАЛИДАЦИИ (Joi) ------
-
-// 1. Для создания заказа (ВСЕ поля обязательные)
 const createOrderSchema = Joi.object({
   photo: Joi.string().uri(),
-  name: Joi.string().required().messages({
+  name: Joi.string().trim().required().messages({
     'string.empty': 'Customer name is required',
     'any.required': 'Customer name is required',
   }),
-  address: Joi.string().required().messages({
+  address: Joi.string().trim().required().messages({
     'string.empty': 'Address is required',
     'any.required': 'Address is required',
   }),
-  products: Joi.string().required().messages({
+  products: Joi.string().trim().required().messages({
     'string.empty': 'Products are required',
     'any.required': 'Products are required',
   }),
-  price: Joi.string().required().messages({
+  price: Joi.string().trim().required().messages({
     'string.empty': 'Price is required',
     'any.required': 'Price is required',
   }),
@@ -85,25 +83,24 @@ const createOrderSchema = Joi.object({
       'Pending'
     )
     .default('Pending'),
-  order_date: Joi.string().required().messages({
+  order_date: Joi.string().trim().required().messages({
     'string.empty': 'Order date is required',
     'any.required': 'Order date is required',
   }),
 });
 
-// 2. Для обновления заказа (ВСЕ поля НЕобязательные)
 const updateOrderSchema = Joi.object({
   photo: Joi.string().uri(),
-  name: Joi.string().messages({
+  name: Joi.string().trim().messages({
     'string.empty': 'Customer name cannot be empty',
   }),
-  address: Joi.string().messages({
+  address: Joi.string().trim().messages({
     'string.empty': 'Address cannot be empty',
   }),
-  products: Joi.string().messages({
+  products: Joi.string().trim().messages({
     'string.empty': 'Products cannot be empty',
   }),
-  price: Joi.string().messages({
+  price: Joi.string().trim().messages({
     'string.empty': 'Price cannot be empty',
   }),
   status: Joi.string().valid(
@@ -120,10 +117,8 @@ const updateOrderSchema = Joi.object({
   }),
 });
 
-// Создаем модель
 const Order = model('order', orderSchema);
 
-// Экспортируем модель и ОБЕ схемы
 module.exports = {
   Order,
   createOrderSchema,

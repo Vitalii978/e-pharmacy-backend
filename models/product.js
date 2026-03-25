@@ -1,28 +1,26 @@
-// models/product.js
-// Описываем, как выглядит продукт в базе данных
-
 const { Schema, model } = require('mongoose');
-const Joi = require('joi'); // для валидации данных
+const Joi = require('joi');
 
-// Схема продукта для MongoDB
 const productSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, 'Product name is required'], // обязательное поле
+      required: [true, 'Product name is required'],
+      trim: true,
     },
     price: {
       type: String,
       required: [true, 'Price is required'],
+      trim: true,
     },
     stock: {
       type: String,
       required: [true, 'Stock is required'],
+      trim: true,
     },
     category: {
       type: String,
       enum: [
-        // только эти значения можно использовать
         'Medicine',
         'Head',
         'Hand',
@@ -38,26 +36,26 @@ const productSchema = new Schema(
     },
     suppliers: {
       type: String,
+      trim: true,
       required: [true, 'Supplier is required'],
     },
   },
   {
-    versionKey: false, // убираем поле __v
-    timestamps: true, // добавляем createdAt и updatedAt автоматически
+    versionKey: false,
+    timestamps: true,
   }
 );
 
-// Схема для валидации при создании продукта (Joi)
 const addProductSchema = Joi.object({
-  name: Joi.string().required().messages({
+  name: Joi.string().trim().required().messages({
     'string.empty': 'Product name is required',
     'any.required': 'Product name is required',
   }),
-  price: Joi.string().required().messages({
+  price: Joi.string().trim().required().messages({
     'string.empty': 'Price is required',
     'any.required': 'Price is required',
   }),
-  stock: Joi.string().required().messages({
+  stock: Joi.string().trim().required().messages({
     'string.empty': 'Stock is required',
     'any.required': 'Stock is required',
   }),
@@ -79,17 +77,16 @@ const addProductSchema = Joi.object({
       'any.only': 'Category must be one of the allowed values',
       'any.required': 'Category is required',
     }),
-  suppliers: Joi.string().required().messages({
+  suppliers: Joi.string().trim().required().messages({
     'string.empty': 'Supplier is required',
     'any.required': 'Supplier is required',
   }),
 });
 
-// Схема для валидации при обновлении (все поля необязательные)
 const editProductSchema = Joi.object({
-  name: Joi.string(),
-  price: Joi.string(),
-  stock: Joi.string(),
+  name: Joi.string().trim(),
+  price: Joi.string().trim(),
+  stock: Joi.string().trim(),
   category: Joi.string().valid(
     'Medicine',
     'Head',
@@ -102,13 +99,11 @@ const editProductSchema = Joi.object({
     'Baby Care',
     'Heart'
   ),
-  suppliers: Joi.string(),
+  suppliers: Joi.string().trim(),
 });
 
-// Создаем модель
 const Product = model('product', productSchema);
 
-// Экспортируем всё вместе
 module.exports = {
   Product,
   addProductSchema,

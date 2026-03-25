@@ -1,21 +1,18 @@
-// @ts-nocheck
-const app = require('./app'); // импортируем настройки из app.js
-const mongoose = require('mongoose'); // библиотека для MongoDB
-require('dotenv').config(); // загружаем переменные из .env
+const app = require('./app');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-const { DB_HOST } = process.env; // берем строку подключения к базе
+const { DB_HOST } = process.env;
 
-// Подключаемся к MongoDB
 mongoose
   .connect(DB_HOST)
   .then(() => {
-    console.log('Connected to database:', mongoose.connection.name); // <- ЭТО ВАЖНО!
-    console.log('DB_HOST used:', process.env.DB_HOST); // <- И ЭТО ТОЖЕ
+    console.log('Connected to database:', mongoose.connection.name);
 
     app.listen(process.env.PORT || 3000);
     console.log(`Server running on port ${process.env.PORT || 3000}`);
   })
   .catch(error => {
     console.log('Connection error:', error.message);
-    process.exit(1); // если не подключились к базе - выходим с ошибкой
+    process.exit(1);
   });

@@ -1,6 +1,3 @@
-// app.js
-// Настройка сервера: middleware, маршруты, обработка ошибок
-
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
@@ -8,8 +5,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 require('dotenv').config();
 
-// Импортируем маршруты
-const userRouter = require('./routes/user'); // обрати внимание: user, а не api/user
+const userRouter = require('./routes/user');
 const productsRouter = require('./routes/products');
 const ordersRouter = require('./routes/orders');
 const suppliersRouter = require('./routes/suppliers');
@@ -18,28 +14,23 @@ const dashboardRouter = require('./routes/dashboard');
 
 const app = express();
 
-// Middleware (выполняются для каждого запроса)
-app.use(logger('dev')); // логирует запросы в консоль
-app.use(cors()); // разрешает запросы с других доменов
-app.use(express.json()); // преобразует JSON из body в объект
+app.use(logger('dev'));
+app.use(cors());
+app.use(express.json());
 
-// Подключаем Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Подключаем маршруты (порядок важен - до 404!)
-app.use('/api/user', userRouter); // все запросы на /api/user идут в userRouter
+app.use('/api/user', userRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/suppliers', suppliersRouter);
 app.use('/api/customers', customersRouter);
 app.use('/api/dashboard', dashboardRouter);
 
-// Если ни один маршрут не подошел - 404
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });
 });
 
-// Обработчик ошибок (всегда последний)
 app.use((err, req, res, next) => {
   const { status = 500, message = 'Server error' } = err;
   res.status(status).json({ message });
